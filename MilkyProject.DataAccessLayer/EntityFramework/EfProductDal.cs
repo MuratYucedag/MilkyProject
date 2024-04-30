@@ -23,7 +23,17 @@ namespace MilkyProject.DataAccessLayer.EntityFramework
         public List<Product> GetProductsWithCategory()
         {
             var context = new MilkyContext();
-            var values = context.Products.Include(x => x.Category).ToList();
+            var values = context.Products.Include(x => x.Category).Select(y => new Product
+            {
+                NewPrice = y.NewPrice,
+                ProductName = y.ProductName,
+                CategoryId = y.CategoryId,
+                ImageUrl = y.ImageUrl,
+                OldPrice = y.OldPrice,
+                ProductId = y.ProductId,
+                Status = y.Status,
+                Category = new Category { CategoryName = y.Category.CategoryName }
+            }).ToList();
             return values;
         }
     }
